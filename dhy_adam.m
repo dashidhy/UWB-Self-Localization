@@ -1,7 +1,7 @@
 function [Cor, count, L] = dhy_adam(M, ini)
 %{
-    Compute node location by Adam gradient descent. 10 times faster than
-    vanilla gradient descent.
+    Compute node location by Adam gradient descent. 2 times faster than
+    vanilla gradient descent under lr = 0.05.
     
     Inputs:
 
@@ -36,13 +36,15 @@ if strcmp(ini, 'rQuads')
     
 elseif strcmp(ini, 'MDS')
     
-    Cor = MSD(M, '2D');
+    Cor = MDS(M, '2D');
     Cor = Cor - Cor(1, :);
     mo = sqrt(sum(Cor(2, :) .^ 2));
     c = Cor(2, 1) / mo;
     s = Cor(2, 2) / mo;
-    Cor(:, 1) = Cor(:, 1) * c + Cor(:, 2) * s;
-    Cor(:, 2) = Cor(:, 2) * c - Cor(:, 1) * s;
+    x = Cor(:, 1) * c + Cor(:, 2) * s;
+    y = Cor(:, 2) * c - Cor(:, 1) * s;
+    Cor(:, 1) = x;
+    Cor(:, 2) = y;
     Cor(2, :) = [mo, 0];
     if Cor(3, 2) < 0
         Cor(:, 2) = -Cor(:, 2);
