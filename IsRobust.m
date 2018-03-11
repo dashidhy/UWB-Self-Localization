@@ -15,11 +15,10 @@ function IoN = IsRobust(i, j, k, l, M)
 
 IoN = 0;
 
-if IsRobust_t(i,j,k,M) && IsRobust_t(j,k,l,M) && IsRobust_t(k,l,i,M) && IsRobust_t(l,i,j,M)
+if IsRobust_t(i, j, k, M) && IsRobust_t(j, k, l, M) && IsRobust_t(k, l, i, M) && IsRobust_t(l, i, j, M)
     
     IoN = 1;
 
 end
 
 end
-
