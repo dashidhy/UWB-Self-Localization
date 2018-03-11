@@ -14,8 +14,6 @@ function Cor_ini = MDS(M, space)
                or (N, 3) if 3D.
 %}
 
-
-
 P = M .^ 2;
 P = -0.5 * (((P - mean(P, 1)) - mean(P, 2)) + mean(mean(P)));
 [U, V, ~] = svd(P);
@@ -30,6 +28,4 @@ else
     
 end
 
-
 end
-
