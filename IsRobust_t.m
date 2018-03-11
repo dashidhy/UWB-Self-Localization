@@ -1,4 +1,4 @@
-function IoN = IsRobust_t(i,j,k,M)
+function IoN = IsRobust_t(i, j, k, M, d_min)
 %{
     Judge if a given triangle is robust.
 
@@ -7,13 +7,13 @@ function IoN = IsRobust_t(i,j,k,M)
     - i, j, k: The three vertexes of the triangle.
 
     - M: The adjacent matrix.
+    
+    - d_min: The threshold, related to the measuring noise.
 
     Output:
     
     - IoN: 1: Robust; 0: Not Robust
 %}
-
-d_min = 0; % The threshold, related to the measuring noise
 
 a = M(i,j); b = M(j,k); c = M(k,i);
 t = min([a; b; c]);
@@ -43,4 +43,3 @@ else
 end
 
 end
-
