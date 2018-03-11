@@ -15,7 +15,7 @@ function IoN = IsRobust_t(i, j, k, M, d_min)
     - IoN: 1: Robust; 0: Not Robust
 %}
 
-a = M(i,j); b = M(j,k); c = M(k,i);
+a = M(i, j); b = M(j, k); c = M(k, i);
 t = min([a; b; c]);
 
 if t == a
