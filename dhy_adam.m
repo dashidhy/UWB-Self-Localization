@@ -1,7 +1,7 @@
 function [Cor, count, L] = dhy_adam(M, ini)
 %{
-    Compute node location by Adam gradient descent. 2 times faster than
-    vanilla gradient descent under lr = 0.05.
+    Compute node location by Adam gradient descent. More than 10 times faster 
+    than vanilla gradient descent when lr = 0.05.
     
     Inputs:
 
