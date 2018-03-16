@@ -63,7 +63,7 @@ while 1
     M_t = sqrt((Cor_square - 2 * (Cor * Cor.')) + Cor_square.');
     
     % Compute loss
-    L = 0.25 * sum(sum((M_t - M) .^ 2));
+    L = sum(sum((M_t - M) .^ 2));
     
     % Compute gradients
     M_t = M_t + eye(n); % Avoid divided by zero.
@@ -86,7 +86,7 @@ while 1
     Cor(2, 2) = 0;
     
     % if converge
-    if sum(sum(abs(update))) < 1e-10
+    if sum(sum(abs(update))) < 1e-10 % should bigger than 1e-14
         break;
     end
     
