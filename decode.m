@@ -1,9 +1,14 @@
 function M = decode(Name)
+%{
+    Decode raw data from nodes.
+%}
+
 fid = fopen(Name,'rb');
 
+n_nodes = 6;
 header = 0;
-L = zeros(7,7);
-M = zeros(7,7);
+L = zeros(n_nodes, n_nodes);
+M = zeros(n_nodes, n_nodes);
 
 while ~feof(fid)
     % detect header
@@ -33,11 +38,10 @@ while ~feof(fid)
 	fread(fid,3,'uint8');
 	
 	type = fread(fid,1,'uint8');
-	if type == 5
-        %L(ID_cur+1) = 1;
-	    fread(fid,2,'uint8');
+    if type == 5
+        fread(fid,6,'uint8');
 		tail = 0;
-		while tail < 60
+        while tail < 60
 		    ID_nei = fread(fid,1,'uint8');
 			if ID_nei ~= 255
 			    Dis = fread(fid,1,'uint8');
@@ -52,18 +56,13 @@ while ~feof(fid)
 			    fread(fid,4,'uint8');
 			end
 			tail = tail+5;
-		end
-	end
-	
-%     if sum(L) == 6
-%         break;
-%     end		
-	
+        end
+    end	
 end
 
-L = L+(L == 0);
-M = M./L;
+L = L + (L == 0);
+M = M ./ L;
+M = (M + M.') ./ 2;
 
 fclose(fid);
 end
-
