@@ -48,7 +48,7 @@ while ~feof(fid)
 				Dis = Dis+fread(fid,1,'uint8')*16^2;
 				Dis = Dis+fread(fid,1,'uint8')*16^4;
 				Dis = Dis+fread(fid,1,'uint8')*16^6;
-                if Dis < 19000
+                if Dis < 18000
                     M(ID_cur+1,ID_nei+1) = M(ID_cur+1,ID_nei+1)+Dis;
                     L(ID_cur+1,ID_nei+1) = L(ID_cur+1,ID_nei+1)+1;
                 end
