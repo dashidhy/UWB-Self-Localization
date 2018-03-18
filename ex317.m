@@ -20,7 +20,7 @@ plot(Cor_gt(6, 1), Cor_gt(6, 2), 'co', 'linewidth', 2.0); hold off;
 axis equal;
 axis([-1, 4, -1.5, 3.5]);
 legend('0', '1', '2', '3', '4', '5');
-title(['Ground Truth, avg bias: ', num2str(100 * sqrt(L / num_nodes)), ' cm']);
+title(['Ground Truth, avg bias: ', num2str(100 * sqrt(L / (num_nodes * (num_nodes-1)))), ' cm']);
 
 % Decode raw data
 M_0 = decode('./data/dist317/dist317_0.dat');
@@ -49,4 +49,4 @@ plot(Cor(6, 1), Cor(6, 2), 'cx', 'linewidth', 2.0); hold off;
 axis equal;
 axis([-1, 4, -1.5, 3.5]);
 legend('GT', '0', '1', '2', '3', '4', '5');
-title(['Ex data, avg bias: ', num2str(100 * sqrt(L / num_nodes)), ' cm']);
+title(['Ex data, avg bias: ', num2str(100 * sqrt(L / (num_nodes * (num_nodes-1)))), ' cm']);

@@ -41,11 +41,7 @@ elseif strcmp(ini, 'MDS')
     mo = sqrt(sum(Cor(2, :) .^ 2));
     c = Cor(2, 1) / mo;
     s = Cor(2, 2) / mo;
-    x = Cor(:, 1) * c + Cor(:, 2) * s;
-    y = Cor(:, 2) * c - Cor(:, 1) * s;
-    Cor(:, 1) = x;
-    Cor(:, 2) = y;
-    Cor(2, :) = [mo, 0];
+    Cor = Cor * [c, -s; s, c];
     if Cor(3, 2) < 0
         Cor(:, 2) = -Cor(:, 2);
     end
@@ -85,8 +81,8 @@ while 1
     Cor(1, :) = 0;
     Cor(2, 2) = 0;
     
-    % if converge
-    if sum(sum(abs(update))) < 1e-10 % should bigger than 1e-14
+    % If converge
+    if sum(sum(abs(update))) < 1e-11 * n * 2 % should bigger than 1e-14
         break;
     end
     
