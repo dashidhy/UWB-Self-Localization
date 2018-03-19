@@ -23,12 +23,12 @@ legend('0', '1', '2', '3', '4', '5');
 title(['Ground Truth, avg bias: ', num2str(100 * sqrt(L / (num_nodes * (num_nodes-1)))), ' cm']);
 
 % Decode raw data
-M_0 = decode('./data/dist317/dist317_0.dat');
-M_1 = decode('./data/dist317/dist317_1.dat');
-M_2 = decode('./data/dist317/dist317_2.dat');
-M_3 = decode('./data/dist317/dist317_3.dat');
-M_4 = decode('./data/dist317/dist317_4.dat');
-M_5 = decode('./data/dist317/dist317_5.dat');
+M_0 = decode('./data/dist319/dist319_0.dat');
+M_1 = decode('./data/dist319/dist319_1.dat');
+M_2 = decode('./data/dist319/dist319_2.dat');
+M_3 = decode('./data/dist319/dist319_3.dat');
+M_4 = decode('./data/dist319/dist319_4.dat');
+M_5 = decode('./data/dist319/dist319_5.dat');
 M_r = M_0 + M_1 + M_2 + M_3 + M_4 + M_5;
 
 % Correct raw data

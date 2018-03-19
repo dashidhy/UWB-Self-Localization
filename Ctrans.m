@@ -21,8 +21,8 @@ C = length(Ind);
 lr = 0.05;
 beta1 = 0.9;
 beta2 = 0.999;
-m = zeros(1, C);
-v = zeros(1, C);
+m = zeros(1, 3);
+v = zeros(1, 3);
 
 Cor_r = Cor_r - mean(Cor_r(Ind, :));
 Cor_t = Cor_r(Ind, :);

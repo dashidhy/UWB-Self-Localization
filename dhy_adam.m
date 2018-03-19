@@ -55,7 +55,7 @@ while 1
     count = count+1;
     
     % Compute new adjacent matrix
-    Cor_square = sum(Cor.^2, 2);
+    Cor_square = sum(Cor .^ 2, 2);
     M_t = sqrt((Cor_square - 2 * (Cor * Cor.')) + Cor_square.');
     
     % Compute loss
@@ -82,7 +82,7 @@ while 1
     Cor(2, 2) = 0;
     
     % If converge
-    if sum(sum(abs(update))) < 1e-11 * n * 2 % should bigger than 1e-14
+    if sum(sum(abs(update))) < 1e-9 * n * 2 % should bigger than 1e-14
         break;
     end
     
