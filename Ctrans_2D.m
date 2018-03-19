@@ -1,4 +1,4 @@
-function [Cor_a, count, L] = Ctrans(Cor_r, Cor_ap, Ind)
+function [Cor_a, count, L] = Ctrans_2D(Cor_r, Cor_ap, Ind)
 %{
     Transfor relative coordinates to absolute coordinates.
  
