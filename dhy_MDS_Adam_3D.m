@@ -1,18 +1,20 @@
-function [Cor, count, L] = dhy_MDS_Adam_3D(M)
+function [Cor, count, L] = dhy_MDS_Adam_3D(M, conv)
 %{
     Compute node location by MDS initialization and Adam gradient descent
-    in 3D space.
+    in 2D space.
     
     Inputs:
 
     - M: Adjacent matrix of nodes in the network, of shape (N, N), where 
          M(i, j) is the raw distance between node i and j, measured by 
          sensors.
+
+    - conv: Converge parameter.
     
     Outputs:
 
-    - Cor: Node locations, of shape (N, 3), where Cor(i, :) is node i's
-           coordinate (x_i, y_i, z_i).
+    - Cor: Node locations, of shape (N, 2), where Cor(i, :) is node i's
+           coordinate (x_i, y_i).
 
     - count: Number of iterations when converge.
     
@@ -67,7 +69,7 @@ while 1
     %...
     
     % If converge
-    if sum(sum(abs(update))) < 1e-9 * n * 3 % should bigger than 1e-14
+    if max(max(abs(update))) < conv
         break;
     end
     
