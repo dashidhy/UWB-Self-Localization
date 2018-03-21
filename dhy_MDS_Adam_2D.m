@@ -35,9 +35,6 @@ mo = sqrt(sum(Cor(2, :) .^ 2));
 c = Cor(2, 1) / mo;
 s = Cor(2, 2) / mo;
 Cor = Cor * [c, -s; s, c];
-if Cor(3, 2) < 0
-    Cor(:, 2) = -Cor(:, 2);
-end
 
 % Start iteration
 count = 0;
@@ -69,6 +66,8 @@ while 1
     v_unbias = v ./ (1 - beta2 .^ count);
     update = lr .* m_unbias ./ (sqrt(v_unbias) + 1e-8);
     Cor = Cor - update;
+    
+    % Constraint
     Cor(1, :) = 0;
     Cor(2, 2) = 0;
     
@@ -77,14 +76,6 @@ while 1
         break;
     end
     
-end
-
-if Cor(2, 1) < 0
-    Cor(:, 1) = -Cor(:, 1);
-end
-
-if Cor(3, 2) < 0
-    Cor(:, 2) = -Cor(:, 2);
 end
 
 end

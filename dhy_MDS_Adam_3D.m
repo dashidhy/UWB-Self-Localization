@@ -1,7 +1,7 @@
 function [Cor, count, L] = dhy_MDS_Adam_3D(M, conv)
 %{
     Compute node location by MDS initialization and Adam gradient descent
-    in 2D space.
+    in 3D space.
     
     Inputs:
 
@@ -13,8 +13,8 @@ function [Cor, count, L] = dhy_MDS_Adam_3D(M, conv)
     
     Outputs:
 
-    - Cor: Node locations, of shape (N, 2), where Cor(i, :) is node i's
-           coordinate (x_i, y_i).
+    - Cor: Node locations, of shape (N, 3), where Cor(i, :) is node i's
+           coordinate (x_i, y_i, z_i).
 
     - count: Number of iterations when converge.
     
@@ -31,7 +31,18 @@ v = zeros(n, 3);
 % MDS initialization  
 Cor = MDS(M, '3D');
 Cor = Cor - Cor(1, :);
-%...
+mo = sqrt(sum(Cor(2, 2:3) .^ 2));
+c = Cor(2, 2) / mo;
+s = Cor(2, 3) / mo;
+Cor(:, 2:3) = Cor(:, 2:3) * [c, -s; s, c];
+mo = sqrt(sum(Cor(2, 1:2) .^ 2));
+c = Cor(2, 1) / mo;
+s = Cor(2, 2) / mo;
+Cor(:, 1:2) = Cor(:, 1:2) * [c, -s; s, c];
+mo = sqrt(sum(Cor(3, 2:3) .^ 2));
+c = Cor(3, 2) / mo;
+s = Cor(3, 3) / mo;
+Cor(:, 2:3) = Cor(:, 2:3) * [c, -s; s, c];
 
 % Start iteration
 count = 0;
@@ -66,7 +77,10 @@ while 1
     update = lr .* m_unbias ./ (sqrt(v_unbias) + 1e-8);
     Cor = Cor - update;
     
-    %...
+    % Constraint
+    Cor(1, :) = 0;
+    Cor(2, 2:3) = 0;
+    Cor(3, 3) = 0;
     
     % If converge
     if max(max(abs(update))) < conv
@@ -74,8 +88,6 @@ while 1
     end
     
 end
-
-%...
 
 end
 

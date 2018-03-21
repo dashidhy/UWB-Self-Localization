@@ -1,15 +1,17 @@
-function [Cor_a, count, L] = Ctrans_2D(Cor_r, Cor_ap, Ind)
+function [Cor_a, count, L] = dhy_Ctrans_2D(Cor_r, Cor_ap, Ind, conv)
 %{
-    Transfor relative coordinates to absolute coordinates.
+    Transfor relative coordinates to absolute coordinates in 2D space.
  
     Inputs:
 
     - Cor_r: Relative coordinates, of shape (N, 2).
 
     - Cor_ap: Absolute coordinates of anchor nodes, of shape (C, 2), where
-              C must larger or equal to 3 in 2D condition.
+              C must larger or equal to 3.
 
     - Ind: Index of anchor nodes, of shape (C,).
+
+    - conv: Converge parameter.
 
     Outputs:
 
@@ -26,7 +28,6 @@ v = zeros(1, 3);
 
 Cor_r = Cor_r - mean(Cor_r(Ind, :));
 Cor_t = Cor_r(Ind, :);
-y_flip = 1;
 
 % Judge chirality
 va_12 = [Cor_ap(2, :) - Cor_ap(1, :), 0];
@@ -42,7 +43,7 @@ if (d_a * d_r.') < 0
     
     Cor_t(:, 2) = -Cor_t(:, 2);
     vr_12(2) = -vr_12(2);
-    y_flip = -1;
+    Cor_r(:, 2) = -Cor_r(:, 2);
     
 end
 
@@ -73,7 +74,7 @@ while 1
     para = para - update;
     
     % If converge
-    if sum(abs(update)) < 1e-11 * 3 
+    if max(abs(update)) < conv
         break;
     end
     
@@ -83,7 +84,6 @@ end
 c = cos(para(3));
 s = sin(para(3));
 
-Cor_r(:, 2) = Cor_r(:, 2) * y_flip;
 Cor_a = Cor_r * [c, -s; s, c] + para(1:2);
 
 end
