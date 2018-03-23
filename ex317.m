@@ -6,7 +6,7 @@ GT = gt.GT;
 [num_nodes, ~] = size(GT);
 
 % Comput relative coordinates
-[Cor_gt, count, L] = dhy_adam(GT, 'MDS');
+[Cor_gt, count, L] = dhy_MDS_Adam_2D(GT, 1e-5);
 
 
 % plot
@@ -35,7 +35,7 @@ M_r = M_0 + M_1 + M_2 + M_3 + M_4 + M_5;
 M_c = (Corr(M_r) ./ 100);
 
 
-[Cor, ~, L] = dhy_adam(M_c, 'MDS');
+[Cor, ~, L] = dhy_MDS_Adam_2D(M_c, 1e-5);
 
 % plot
 figure;
