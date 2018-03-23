@@ -19,9 +19,9 @@ M_sim = M_gt + noise;
 
 % Comupte coordinates
 [Cor_sim_r, count, ~] = dhy_MDS_Adam_3D(M_sim, 1e-5);
-Ind = [1, 2, 3, 4, 5, 6];
+Ind = [1, 2, 3, 4];
 %Cor_sim_a = Cor_sim_r;
-[Cor_sim_a, count_c, ~] = dhy_Ctrans_3D(Cor_sim_r, Cor_gt(Ind, :), Ind, 1e-11);
+[Cor_sim_a, count_c, ~] = dhy_Ctrans_3D(Cor_sim_r, Cor_gt(Ind, :), Ind, 1e-5);
 
 % Some statistics
 bias = sum(sqrt(sum((Cor_sim_a - Cor_gt) .^ 2, 2))) / num_nodes;

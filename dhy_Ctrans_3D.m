@@ -72,18 +72,13 @@ while 1
     dpara(7) = sum(sum(D .* (-s .* Cor_t + c .* e_c_r + s .* (e_d_r * e))));
     dpara(8) = (e * e.' -1) / 2;
     
-    % Vanilla G.D. update
+    % Vanilla G.D. update, don't know why but works much better than other G.D. variants in this case.
     update = lr .* dpara;
     para = para - update;
     
     % If converge
     if max(max(update)) < conv
         break;
-    end
-    
-    % Learning rate decay
-    if mod(count, 100) == 0
-        lr = lr * 0.9;
     end
     
 end
