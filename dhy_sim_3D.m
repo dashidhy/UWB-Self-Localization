@@ -1,8 +1,8 @@
 clear all; close all; clc;
 
 % Simulation parameters
-num_nodes = 50;
-n_std = 0.1;
+num_nodes = 10;
+n_std = 0.5;
 
 % Generate ground truth (G.T.)
 Cor_gt = 10 * rand(num_nodes, 3);

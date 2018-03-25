@@ -2,7 +2,7 @@ clear all; close all; clc;
 
 % Simulation parameters
 num_nodes = 50;
-n_std = 0.1;
+n_std = 0.5;
 
 % Generate ground truth (G.T.)
 Cor_gt = 10 * rand(num_nodes, 2);
@@ -19,8 +19,8 @@ M_sim = M_gt + noise;
 
 % Comupte coordinates
 [Cor_sim_r, count, ~] = dhy_MDS_Adam_2D(M_sim, 1e-5);
-Ind = [1, 2, 3, 4, 5, 6];
-[Cor_sim_a, count_c, ~] = dhy_Ctrans_2D(Cor_sim_r, Cor_gt(Ind, :), Ind, 1e-11);
+Ind = [1, 2, 3, 4];
+[Cor_sim_a, count_c, ~] = dhy_Ctrans_2D(Cor_sim_r, Cor_gt(Ind, :), Ind, 1e-5);
 
 % Some statistics
 bias = sum(sqrt(sum((Cor_sim_a - Cor_gt) .^ 2, 2))) / num_nodes;
