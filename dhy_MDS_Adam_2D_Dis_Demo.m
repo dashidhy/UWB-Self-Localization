@@ -1,4 +1,4 @@
-function Cor = dhy_MDS_Adam_2D_Dis(M, size_sub, overlap, conv)
+function Cor = dhy_MDS_Adam_2D_Dis_Demo(M, size_sub, overlap, conv)
 %{
     A distributed localization algorithm for 2D networks.
 
@@ -31,13 +31,13 @@ Cor = zeros(N, 2);
 
 % Start locating and splicing
 s = 1;
-e = s + size_sub -1;
+e = s + size_sub - 1;
 [Cor(s:e, :), ~, ~] = dhy_MDS_Adam_2D(M(s:e, s:e), conv);
 
-for i = 2:(num_block-1)
+for i = 2:(num_block - 1)
     
-    s = s + size_sub -overlap;
-    e = s + size_sub -1;
+    s = s + size_sub - overlap;
+    e = s + size_sub - 1;
     
     [Cor_t, ~, ~] = dhy_MDS_Adam_2D(M(s:e, s:e), conv);
     [Cor_t, ~, ~] = dhy_Ctrans_2D(Cor_t, Cor(s:(s + overlap -1), :), 1:overlap, conv);
@@ -45,7 +45,7 @@ for i = 2:(num_block-1)
     
 end
 
-s = s + size_sub -overlap;
+s = s + size_sub - overlap;
 e = N;
 [Cor_t, ~, ~] = dhy_MDS_Adam_2D(M(s:e, s:e), conv);
 [Cor_t, ~, ~] = dhy_Ctrans_2D(Cor_t, Cor(s:(s + overlap -1), :), 1:overlap, conv);
