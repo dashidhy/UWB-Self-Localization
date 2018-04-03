@@ -9,8 +9,16 @@ Cor_gt = 10 * rand(num_nodes, 2);
 Cor_gt(1:4, :) = [10, 0; 10, 10; 0, 0; 0, 10];
 
 % Adjacent matrix of G.T. 
-Cor_square = sum(Cor_gt .^ 2, 2);
-M_gt = sqrt((Cor_square - 2 * (Cor_gt * Cor_gt.')) + Cor_square.');
+M_gt = zeros(num_nodes);
+
+for i = 1:(num_nodes-1)
+    for j = (i+1):num_nodes
+        
+        M_gt(i, j) = sqrt(sum((Cor_gt(i, :) - Cor_gt(j, :)) .^ 2));
+        M_gt(j, i) = M_gt(i, j);
+        
+    end    
+end
 
 % Adjacent matrix of simulated measurement with Gaussion noise
 noise = n_std * sqrt(2) * randn(num_nodes, num_nodes);
