@@ -16,7 +16,6 @@ function [Cor_a, count, L] = dhy_Ctrans_2D(Cor_r, Cor_ap, Ind, conv)
     Outputs:
 
     - Cor_a: The absolute coordinates, of shape (N, 2).
-
 %}
 
 C = length(Ind);
@@ -87,4 +86,3 @@ s = sin(para(3));
 Cor_a = Cor_r * [c, -s; s, c] + para(1:2);
 
 end
-

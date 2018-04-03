@@ -1,8 +1,8 @@
 clear all; close all; clc;
 
 % Simulation parameters
-num_nodes = 10;
-n_std = 0.5;
+num_nodes = 50;
+n_std = 0.1;
 
 % Generate ground truth (G.T.)
 Cor_gt = 10 * rand(num_nodes, 3);
@@ -34,5 +34,4 @@ plot3(Cor_sim_a(:, 1), Cor_sim_a(:, 2), Cor_sim_a(:, 3), 'bx', 'markersize', 10)
 axis equal;
 axis([-0.5, 10.5, -0.5, 10.5, -0.5, 10.5]);
 legend('Ground Truth', 'Anchor nodes', ['Sim, loc iter: ', num2str(count), ', trans iter: ', num2str(count_c)]);
-
 title([num2str(num_nodes), ' nodes; Noise std: ', num2str(n_std * 100), ' cm; Avg bias: ', num2str(bias * 100), ' cm']);

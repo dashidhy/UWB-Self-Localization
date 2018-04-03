@@ -16,7 +16,6 @@ function [Cor_a, count, L] = dhy_Ctrans_3D(Cor_r, Cor_ap, Ind, conv)
     Outputs:
 
     - Cor_a: The absolute coordinates, of shape (N, 3).
-
 %}
 
 C = length(Ind);
@@ -94,4 +93,3 @@ e_d_r = Cor_r * e.';
 Cor_a = (c .* Cor_r + s .* e_c_r + (1 - c) .* (e_d_r * e)) + para(1:3);
 
 end
-

@@ -29,7 +29,7 @@ m = zeros(n, 2);
 v = zeros(n, 2);
 
 % MDS initialization    
-Cor = MDS(M, '2D');
+Cor = dhy_MDS(M, '2D');
 Cor = Cor - Cor(1, :);
 mo = sqrt(sum(Cor(2, :) .^ 2));
 c = Cor(2, 1) / mo;
@@ -79,4 +79,3 @@ while 1
 end
 
 end
-

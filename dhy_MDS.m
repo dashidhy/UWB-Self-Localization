@@ -1,4 +1,4 @@
-function Cor_ini = MDS(M, space)
+function Cor_ini = dhy_MDS(M, space)
 %{
     MDS initialization.
 

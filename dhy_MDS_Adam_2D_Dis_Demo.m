@@ -1,6 +1,6 @@
 function Cor = dhy_MDS_Adam_2D_Dis_Demo(M, size_sub, overlap, conv)
 %{
-    A distributed localization algorithm for 2D networks.
+    A distributed localization algorithm for 2D networks. (Demo)
 
     Inputs:
 
@@ -52,4 +52,3 @@ e = N;
 Cor(s:e, :) = Cor_t;
 
 end
-

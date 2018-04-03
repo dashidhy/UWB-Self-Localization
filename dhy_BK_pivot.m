@@ -1,14 +1,16 @@
-function [max_cliques, num_cliques] = BK_pivot(M_bool)
+function [max_cliques, num_cliques] = dhy_BK_pivot(M_bool)
 %{
     Bron–Kerbosch algorithm with pivoting.
 
     Input:
 
-    - m_bool: The adjacent matrix with each element 1 or 0 which means connected or not.
+    - M_bool: The adjacent matrix with each element 1 or 0 which means connected or not.
  
     Output:
 
     - max_cliques: All maximal cliques in the graph.
+
+    - num_cliques: The number of maximal cliques.
 %}
 
 % Initialization
@@ -23,7 +25,7 @@ P = 1:N;
 X = [];
 
 % Begin recurring
-BK_recur(M_bool, R, P, X);
+dhy_BK_recur(M_bool, R, P, X);
 
 % Return
 max_cliques = cliques;
@@ -34,9 +36,10 @@ clear global num_c;
 
 end
 
-function BK_recur(M_bool, R, P, X)
+function dhy_BK_recur(M_bool, R, P, X)
 %{
-    The recurring body of BK algorithm. For reference, see https://en.wikipedia.org/wiki/Bron%E2%80%93Kerbosch_algorithm#cite_note-4
+    The recurring body of BK algorithm.
+    See https://en.wikipedia.org/wiki/Bron%E2%80%93Kerbosch_algorithm#cite_note-4 for more references.
 %}
 
 global cliques;
@@ -58,7 +61,7 @@ for i = 1:length(P_m_Nu)
     
     v = P_m_Nu(i);
     Nv = Neighbor(v, M_bool);
-    BK_recur(M_bool, union(R, v), intersect(P, Nv), intersect(X, Nv));
+    dhy_BK_recur(M_bool, union(R, v), intersect(P, Nv), intersect(X, Nv));
     
     P = setdiff(P, v);
     X = union(X, v);
