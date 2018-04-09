@@ -29,7 +29,7 @@ M_sim = M_gt + noise;
 t = tic;
 Cor_sim_r = dhy_MDS_Adam_2D_Dis_Demo(M_sim, 32, 5, 1e-5);
 Ind = [1, 2, 3, 4];
-[Cor_sim_a, count_c, ~] = dhy_Ctrans_2D(Cor_sim_r, Cor_gt(Ind, :), Ind, 1e-5);
+Cor_sim_a = dhy_Ctrans_ICP(Cor_sim_r, Cor_gt(Ind, :), Ind);
 t_e = toc(t);
 
 % Some statistics

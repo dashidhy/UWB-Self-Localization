@@ -40,7 +40,7 @@ for i = 2:(num_block - 1)
     e = s + size_sub - 1;
     
     [Cor_t, ~, ~] = dhy_MDS_Adam_2D(M(s:e, s:e), conv);
-    [Cor_t, ~, ~] = dhy_Ctrans_2D(Cor_t, Cor(s:(s + overlap -1), :), 1:overlap, conv);
+    Cor_t = dhy_Ctrans_ICP(Cor_t, Cor(s:(s + overlap -1), :), 1:overlap);
     Cor(s:e, :) = Cor_t;
     
 end
@@ -48,7 +48,7 @@ end
 s = s + size_sub - overlap;
 e = N;
 [Cor_t, ~, ~] = dhy_MDS_Adam_2D(M(s:e, s:e), conv);
-[Cor_t, ~, ~] = dhy_Ctrans_2D(Cor_t, Cor(s:(s + overlap -1), :), 1:overlap, conv);
+Cor_t = dhy_Ctrans_ICP(Cor_t, Cor(s:(s + overlap -1), :), 1:overlap);
 Cor(s:e, :) = Cor_t;
 
 end
