@@ -38,6 +38,7 @@ Ind = 1:num_nodes;
 
 size_sub = 20;
 overlap = 4;
+
 % Reconstruct M
 Ind_c = dhy_2D_Dis2(size_sub, overlap);
 
@@ -50,22 +51,37 @@ for i = 1:length(Ind_c(:, 1))
     
     s = Ind_c(i, 1);
     e = Ind_c(i, 2);
-    [Cor_t, ~, ~] = dhy_MDS_Adam_2D(M(s:e, s:e), conv);
+    
     if s < flag
         
+        [Cor_t, ~, ~] = dhy_MDS_Adam_2D(M(s:e, s:e), 1e-5);
         Cor_t = dhy_Ctrans_ICP(Cor_t, Cor(s:(s + overlap -1), :), 1:overlap);
         
+    elseif (e - s) > (overlap -1)
+        
+        [Cor_t, ~, ~] = dhy_MDS_Adam_2D(M(s:e, s:e), 1e-5);
+        Cor_a = zeros(overlap, 2);
+        
+        for j = s:(s + overlap - 1)
+            
+            
+            
+        end
+        
+        Cor_t = dhy_Ctrans_ICP(Cor_t, Cor_a, 1:overlap);
+        
     end
+    
     Cor(s:e, :) = Cor_t;
     flag = e;
     
 end
 
 Ind_a = [find(Ind == 1), find(Ind == 2), find(Ind == 3), find(Ind == 4)];
-Cor = dhy_Ctrans_ICP(Cor_t, Cor_gt([1, 2, 3, 4], :), Ind_a);
+Cor = dhy_Ctrans_ICP(Cor, Cor_gt([1, 2, 3, 4], :), Ind_a);
 
 % Some statistics
-bias = sum(sqrt(sum((Cor_sim_a - Cor_gt) .^ 2, 2))) / num_nodes;
+bias = sum(sqrt(sum((Cor - Cor_gt) .^ 2, 2))) / num_nodes;
 
 % Plot result
 figure;

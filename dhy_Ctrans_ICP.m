@@ -1,19 +1,19 @@
 function Cor_a = dhy_Ctrans_ICP(Cor_r, Cor_ap, Ind)
 %{
-    3D-3D SVD ICP algorithm.
+    SVD ICP algorithm.
  
     Inputs:
 
-    - Cor_r: Relative coordinates, of shape (N, 3).
+    - Cor_r: Relative coordinates, of shape (N, D).
 
-    - Cor_a: Absolute coordinates of anchor nodes, of shape (C, 3), where
+    - Cor_a: Absolute coordinates of anchor nodes, of shape (C, D), where
              C must larger or equal to 3.
 
     - Ind: Index of anchor nodes, of shape (C,)
 
     Outputs:
 
-    - Cor_a: The absolute coordinates, of shape (N, 2).
+    - Cor_a: The absolute coordinates, of shape (N, D).
 %}
 
 [C, D] = size(Cor_ap); 
@@ -38,7 +38,7 @@ end
 R = V * U.';
 t = mean_ap - mean_t * R;
 
-% Transtor all coordinates
+% Transform all coordinates
 Cor_a = Cor_r * R + t;
 
 end

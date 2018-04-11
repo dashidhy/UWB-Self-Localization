@@ -9,16 +9,10 @@ Cor_gt = 100 * rand(num_nodes, 2);
 Cor_gt(1:4, :) = [100, 0; 100, 100; 0, 0; 0, 100];
 
 % Adjacent matrix of G.T. 
-M_gt = zeros(num_nodes);
-
-for i = 1:(num_nodes-1)
-    for j = (i+1):num_nodes
-        
-        M_gt(i, j) = sqrt(sum((Cor_gt(i, :) - Cor_gt(j, :)) .^ 2));
-        M_gt(j, i) = M_gt(i, j);
-        
-    end    
-end
+Cor_square = sum(Cor_gt .^ 2, 2);
+M_gt = (-2 .* (Cor_gt * Cor_gt.') + Cor_square) + Cor_square.';
+M_gt(M_gt < 0) = 0;
+M_gt = sqrt(M_gt);
 
 % Adjacent matrix of simulated measurement with Gaussion noise
 noise = n_std * sqrt(2) * randn(num_nodes, num_nodes);
@@ -27,7 +21,7 @@ M_sim = M_gt + noise;
 
 % Comupte coordinates
 t = tic;
-Cor_sim_r = dhy_MDS_Adam_2D_Dis_Demo(M_sim, 32, 5, 1e-5);
+Cor_sim_r = dhy_MDS_Adam_2D_Dis_Demo(M_sim, 40, 5, 1e-5);
 Ind = [1, 2, 3, 4];
 Cor_sim_a = dhy_Ctrans_ICP(Cor_sim_r, Cor_gt(Ind, :), Ind);
 t_e = toc(t);

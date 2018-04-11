@@ -1,4 +1,4 @@
-function Cor = dhy_MDS_Adam_2D_Dis_Demo(M, size_sub, overlap, conv)
+function Cor = dhy_MDS_Adam_2D_Dis_Demo(M, size_sub, overlap, Converge)
 %{
     A distributed localization algorithm for 2D networks. (Demo)
 
@@ -13,7 +13,7 @@ function Cor = dhy_MDS_Adam_2D_Dis_Demo(M, size_sub, overlap, conv)
     - overlap: The size of overlap for splicing the subsets. At least 3 in
                2D condition.
 
-    - conv: Converge parameter.
+    - Converge: Converge parameter.
 
     Output:
 
@@ -32,14 +32,14 @@ Cor = zeros(N, 2);
 % Start locating and splicing
 s = 1;
 e = s + size_sub - 1;
-[Cor(s:e, :), ~, ~] = dhy_MDS_Adam_2D(M(s:e, s:e), conv);
+[Cor(s:e, :), ~, ~] = dhy_MDS_Adam_2D(M(s:e, s:e), Converge);
 
 for i = 2:(num_block - 1)
     
     s = s + size_sub - overlap;
     e = s + size_sub - 1;
     
-    [Cor_t, ~, ~] = dhy_MDS_Adam_2D(M(s:e, s:e), conv);
+    [Cor_t, ~, ~] = dhy_MDS_Adam_2D(M(s:e, s:e), Converge);
     Cor_t = dhy_Ctrans_ICP(Cor_t, Cor(s:(s + overlap -1), :), 1:overlap);
     Cor(s:e, :) = Cor_t;
     
@@ -47,7 +47,7 @@ end
 
 s = s + size_sub - overlap;
 e = N;
-[Cor_t, ~, ~] = dhy_MDS_Adam_2D(M(s:e, s:e), conv);
+[Cor_t, ~, ~] = dhy_MDS_Adam_2D(M(s:e, s:e), Converge);
 Cor_t = dhy_Ctrans_ICP(Cor_t, Cor(s:(s + overlap -1), :), 1:overlap);
 Cor(s:e, :) = Cor_t;
 
