@@ -6,8 +6,13 @@ global Ind;
 % Simulation parameters
 num_nodes = 1000;
 Cor = zeros(num_nodes, 2);
-n_std = 0;
-range = 40;
+n_std = 0.1;
+range_upper = 40;
+range_lower = 5;
+base = 6;
+size_sub = 25;
+overlap = 5;
+
 
 % Generate ground truth (G.T.)
 Cor_gt = 100 * rand(num_nodes, 2);
@@ -31,24 +36,23 @@ noise = ((noise + noise.') / 2) .* (1- eye(num_nodes));
 M = M_gt + noise;
 figure;
 imshow(M == -1);
-M(M > range) = -1;
+M(M > range_upper) = -1;
+M(M < range_lower) = -1;
+M = M + eye(num_nodes);
 figure;
 imshow(M == -1);
 Ind = 1:num_nodes;
 
-size_sub = 32;
-overlap = 5;
-
+t = tic;
 % Reconstruct M
 Ind_c = dhy_2D_matrix_reconstruct(size_sub, overlap);
 
-figure;
-imshow(M == -1);
+% figure;
+% imshow(M == -1);
 
 s = Ind_c(1, 1);
 e = Ind_c(1, 2);
 
-t = tic;
 [Cor_t, ~, ~] = dhy_MDS_Adam_2D(M(s:e, s:e), 1e-5);
 Cor(s:e, :) = Cor_t;
 flag = e;
@@ -68,7 +72,6 @@ for i = 2:length(Ind_c(:, 1))
         [Cor_t, ~, ~] = dhy_MDS_Adam_2D(M(s:e, s:e), 1e-5);
         
         Cor_a = zeros(overlap, 2);
-        base = 5;
         M_at = zeros(base + 1);
         
         for j = s:(s + overlap - 1)
@@ -91,7 +94,6 @@ for i = 2:length(Ind_c(:, 1))
         
     else
         
-        base = 5;
         M_at = zeros(base + 1);
         
         for j = s:e
