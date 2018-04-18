@@ -1,4 +1,4 @@
-classdef SimNets < handle
+classdef CNet < handle
         
     properties
         
@@ -20,7 +20,7 @@ classdef SimNets < handle
     
     methods
         
-        function obj = SimNets(Num_nodes, Dim)
+        function obj = CNet(Num_nodes, Dim)
             
             obj.Num_nodes = Num_nodes;
             obj.Dim = Dim;
