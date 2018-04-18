@@ -1,4 +1,4 @@
-function [Cor, count, L] = dhy_MDS_Adam_3D(M, Converge)
+function [Cor, iter] = dhy_MDS_Adam_3D(M, Converge)
 %{
     Compute node location by MDS initialization and Adam gradient descent
     in 3D space.
@@ -16,9 +16,8 @@ function [Cor, count, L] = dhy_MDS_Adam_3D(M, Converge)
     - Cor: Node locations, of shape (N, 3), where Cor(i, :) is node i's
            coordinate (x_i, y_i, z_i).
 
-    - count: Number of iterations when converge.
-    
-    - L: Final loss.
+    - iter: Number of iterations when converge.
+
 %}
 
 [n, ~] = size(M);
@@ -45,19 +44,16 @@ s = Cor(3, 3) / mo;
 Cor(:, 2:3) = Cor(:, 2:3) * [c, -s; s, c];
 
 % Start iteration
-count = 0;
+iter = 0;
 while 1
     
-    count = count + 1;
+    iter = iter + 1;
     
     % Compute new adjacent matrix
     Cor_square = sum(Cor .^ 2, 2);
     M_t = (-2 * (Cor * Cor.') + Cor_square) + Cor_square.';
     M_t(M_t < 0) = 0;
     M_t = sqrt(M_t);
-    
-    % Compute loss
-    L = sum(sum((M_t - M) .^ 2));
     
     % Compute gradients
     M_t = M_t + eye(n); % Avoid divided by zero.
@@ -74,8 +70,8 @@ while 1
     % Adam update
     m = beta1 .* m + (1 - beta1) .* g;
     v = beta2 .* v + (1 - beta2) .* g .* g;
-    m_unbias = m ./ (1 - beta1 .^ count);
-    v_unbias = v ./ (1 - beta2 .^ count);
+    m_unbias = m ./ (1 - beta1 .^ iter);
+    v_unbias = v ./ (1 - beta2 .^ iter);
     update = lr .* m_unbias ./ (sqrt(v_unbias) + 1e-8);
     Cor = Cor - update;
     
