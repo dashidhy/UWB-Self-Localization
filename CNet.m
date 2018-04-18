@@ -84,14 +84,14 @@ classdef CNet < handle
             if obj.Dim == 2
             
                 t = tic;
-                [Loc, iter, ~] = dhy_MDS_Adam_2D(obj.M, 1e-5);
+                [Loc, iter] = dhy_MDS_Adam_2D(obj.M, 1e-5);
                 obj.Loc_cp = dhy_Ctrans_ICP(Loc, obj.Loc_anchor, obj.Index_anchor);
                 time = toc(t);
             
             elseif obj.Dim == 3
                 
                 t = tic;
-                [Loc, iter, ~] = dhy_MDS_Adam_3D(obj.M, 1e-5);
+                [Loc, iter] = dhy_MDS_Adam_3D(obj.M, 1e-5);
                 obj.Loc_cp = dhy_Ctrans_ICP(Loc, obj.Loc_anchor, obj.Index_anchor);
                 time = toc(t);
                 
