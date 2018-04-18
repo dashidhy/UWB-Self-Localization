@@ -49,6 +49,13 @@ while 1
     
     iter = iter + 1;
     
+    % Check iter
+    if iter > 500
+        
+        error('Runtime Error!');
+        
+    end
+    
     % Compute new adjacent matrix
     Cor_square = sum(Cor .^ 2, 2);
     M_t = (-2 * (Cor * Cor.') + Cor_square) + Cor_square.';
