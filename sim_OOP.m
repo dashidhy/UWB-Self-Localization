@@ -1,7 +1,11 @@
 clear all; close all; clc;
 
-G = CNet(50, 2);
-[iter, time] = G.Simulate(0.1, 10);
+num_nodes = 30;
+noise_std = 0.5;
+range = 10;
+
+G = CNet(num_nodes, 2);
+[iter, time] = G.Simulate(noise_std, range);
 
 figure;
 plot(G.Loc_gt(:, 1), G.Loc_gt(:, 2), 'ro', 'markersize', 6); hold on;
@@ -17,8 +21,8 @@ disp(['Iteration: ', num2str(iter)]);
 disp(['Time: ', num2str(time), ' s']);
 disp(' ');
 
-G.Reset(50, 3);
-[iter, time] = G.Simulate(0.1, 10);
+G.Reset(num_nodes, 3);
+[iter, time] = G.Simulate(noise_std, range);
 
 figure;
 plot3(G.Loc_gt(:, 1), G.Loc_gt(:, 2), G.Loc_gt(:, 3), 'ro', 'markersize', 6); hold on;
