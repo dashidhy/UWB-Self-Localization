@@ -1,7 +1,7 @@
 clear all; close all; clc;
 
-num_nodes = 30;
-noise_std = 0.5;
+num_nodes = 50;
+noise_std = 0.1;
 range = 10;
 
 G = CNet(num_nodes, 2);

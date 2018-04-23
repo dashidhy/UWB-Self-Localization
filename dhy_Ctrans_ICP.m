@@ -16,7 +16,7 @@ function Cor_a = dhy_Ctrans_ICP(Cor_r, Cor_ap, Ind)
     - Cor_a: The absolute coordinates, of shape (N, D).
 %}
 
-[C, D] = size(Cor_ap); 
+% Fetch relative coordinates of anchor nodes
 Cor_t = Cor_r(Ind, :);
 
 % Compute and delete mean coordinates
@@ -26,12 +26,7 @@ Cor_ap = Cor_ap - mean_ap;
 Cor_t = Cor_t - mean_t;
 
 % Auxiliary matrix W
-W = zeros(D);
-for i = 1:C
-    
-    W = W + Cor_ap(i, :).' * Cor_t(i, :);
-    
-end
+W =  Cor_ap.' * Cor_t;
 
 % Compute R and t
 [U, ~, V] = svd(W);
