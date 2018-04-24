@@ -24,6 +24,8 @@ classdef CNet < handle
             
             obj.Num_nodes = Num_nodes;
             obj.Dim = Dim;
+            obj.M = zeros(Num_nodes);
+            obj.Loc_cp = zeros(Num_nodes, Dim);
         
         end
         
@@ -39,9 +41,9 @@ classdef CNet < handle
             
             obj.Index_anchor = [];
             obj.Loc_anchor = [];
-            obj.M = [];
+            obj.M = zeros(Num_nodes);
             
-            obj.Loc_cp = [];
+            obj.Loc_cp = zeros(Num_nodes, Dim);
         
         end
         
