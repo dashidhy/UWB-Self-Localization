@@ -14,7 +14,7 @@ plot(G.Loc_cp(:, 1), G.Loc_cp(:, 2), 'bx', 'markersize', 10); hold on;
 axis equal;
 axis([-0.5, G.Range + 0.5, -0.5, G.Range + 0.5]);
 legend('Ground Truth', 'Anchor nodes', 'Sim');
-title([num2str(G.Num_nodes), ' nodes; Noise std: ', num2str(G.Noise_std * 100), ' cm; Avg bias: ', num2str(G.Bias .* 100), ' cm']);
+title([num2str(G.Num_nodes), ' nodes; Noise std: ', num2str(G.Noise_std * 100), ' cm; Avg Bias: ', num2str(G.Avg_Bias .* 100), ' cm']);
 
 disp('2D simulation:');
 disp(['Iteration: ', num2str(iter)]);
@@ -31,7 +31,7 @@ plot3(G.Loc_cp(:, 1), G.Loc_cp(:, 2), G.Loc_cp(:, 3), 'bx', 'markersize', 10); h
 axis equal;
 axis([-0.5, G.Range + 0.5, -0.5, G.Range + 0.5, -0.5, G.Range + 0.5]);
 legend('Ground Truth', 'Anchor nodes', 'Sim');
-title([num2str(G.Num_nodes), ' nodes; Noise std: ', num2str(G.Noise_std * 100), ' cm; Avg bias: ', num2str(G.Bias .* 100), ' cm']);
+title([num2str(G.Num_nodes), ' nodes; Noise std: ', num2str(G.Noise_std * 100), ' cm; Avg Bias: ', num2str(G.Avg_Bias .* 100), ' cm']);
 
 disp('3D simulation:');
 disp(['Iteration: ', num2str(iter)]);

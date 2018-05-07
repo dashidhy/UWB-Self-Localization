@@ -8,7 +8,8 @@ classdef CNet < handle
         Noise_std = 0;
         Range = 0;
         Loc_gt = [];
-        Bias = 0;
+        Avg_Bias = 0;
+        Max_Bias = 0;
         
         Index_anchor = [];
         Loc_anchor = [];
@@ -37,8 +38,9 @@ classdef CNet < handle
             obj.Noise_std = 0;
             obj.Range = 0;
             obj.Loc_gt = [];
-            obj.Bias = 0;
-            
+            obj.Avg_Bias = 0;
+            obj.Max_Bias = 0;
+                        
             obj.Index_anchor = [];
             obj.Loc_anchor = [];
             obj.M = zeros(Num_nodes);
@@ -77,7 +79,9 @@ classdef CNet < handle
             obj.M = M_gt + noise;
             
             [iter, time] = obj.Localize();
-            obj.Bias = sum(sqrt(sum((obj.Loc_cp - obj.Loc_gt) .^ 2, 2))) ./ obj.Num_nodes;
+            bias = sqrt(sum((obj.Loc_cp - obj.Loc_gt) .^ 2, 2));
+            obj.Max_Bias = max(bias);
+            obj.Avg_Bias = sum(bias) ./ obj.Num_nodes;
             
         end
         
