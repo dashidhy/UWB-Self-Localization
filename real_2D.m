@@ -1,12 +1,12 @@
 clear all; close all; clc;
 
 load('./data/data525.mat');
-plot(Cor_a(:, 1), Cor_a(:, 2), 'ro', 'markersize', 8, 'linewidth', 1.2); hold on;
-plot(Cor_gt(:, 1), Cor_gt(:, 2), 'bx', 'markersize', 12, 'linewidth', 2.0); hold off;
+plot(Cor_gt(:, 1), Cor_gt(:, 2), 'ro', 'markersize', 8, 'linewidth', 1.2); hold on;
+plot(Cor_a(:, 1), Cor_a(:, 2), 'bx', 'markersize', 12, 'linewidth', 2.0); hold off;
 axis equal;
 axis([-5, 8, -1, 7.5]);
 title('A real test');
-legend('Located', 'Ground Truth');
+legend('Ground Truth', 'Located');
 xlabel('m');
 ylabel('m');
 bias = sqrt(sum((Cor_a - Cor_gt) .^ 2, 2));
