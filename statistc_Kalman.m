@@ -16,23 +16,24 @@ vel_c = [0.5, 0]; % m/s
 vel_r = 0.3; % rad/s
 vel_r2 = -0.6; % rad/s
 
-frame = 100; % fps
-sim_time = 36; % s
+frame = 50; % fps
+sim_time = 80; % s
 
 R = [cos(vel_r ./ frame), -sin(vel_r ./ frame); sin(vel_r ./ frame), cos(vel_r ./ frame)];
 R2 = [cos(vel_r2 ./ frame), -sin(vel_r2 ./ frame); sin(vel_r2 ./ frame), cos(vel_r2 ./ frame)];
 
 G = CNet(Num_nodes, Dim);
-h_fig = figure('Visible', 'on');
 
 x_k = zeros(4, 1);
 dt = 1 / frame;
 F = [1, 0, dt, 0; 0, 1, 0, dt; 0, 0, 1, 0; 0, 0, 0, 1];
-Q = [0.25 * dt^4, 0, 0.5 * dt^3, 0; 0, 0.25 * dt^4, 0, 0.5 * dt^3; 0.5 * dt^3, 0, dt^2, 0; 0, 0.5 * dt^3, 0, dt^2] * 0.0;
+Q = [0.25 * dt^4, 0, 0.5 * dt^3, 0; 0, 0.25 * dt^4, 0, 0.5 * dt^3; 0.5 * dt^3, 0, dt^2, 0; 0, 0.5 * dt^3, 0, dt^2] * 0.1;
 H = [1, 0, 0, 0; 0, 1, 0, 0];
-r = [0.5, 0; 0, 0.5];
-P = eye(4) * 0.0001;
+r = [0.0025, 0; 0, 0.0025];
+I = eye(4);
+P = I * 0.5;
 
+n_node = 2;
 x_bias = zeros(1, frame * sim_time);
 y_bias = zeros(1, frame * sim_time);
 x_bias_1 = zeros(1, frame * sim_time);
@@ -56,8 +57,8 @@ for i = 1:(frame * sim_time)
     try
         
         G.Localize();
-        x_bias_1(i) = G.Loc_cp(1, 1) - Loc_gt(1, 1);
-        y_bias_1(i) = G.Loc_cp(1, 2) - Loc_gt(1, 2);
+        x_bias_1(i) = G.Loc_cp(n_node, 1) - Loc_gt(n_node, 1);
+        y_bias_1(i) = G.Loc_cp(n_node, 2) - Loc_gt(n_node, 2);
         
     catch
         
@@ -67,7 +68,7 @@ for i = 1:(frame * sim_time)
     
     if i == 1
         
-        x_k = [Loc_gt(1, 1); Loc_gt(1, 2); 0.5; 0];
+        x_k = [G.Loc_cp(n_node, 1); G.Loc_cp(n_node, 2); 0.5 + 0.5 * randn(1); 0.5 * randn(1)];
     
     else
             
@@ -80,19 +81,20 @@ for i = 1:(frame * sim_time)
         
         if e ~= 1
             
-            x_k = (eye(4) - K * H) * x_k + K * [G.Loc_cp(1, 1); G.Loc_cp(1, 2)];
+            x_k = (I - K * H) * x_k + K * [G.Loc_cp(n_node, 1); G.Loc_cp(n_node, 2)];
         
         else
             
-            x_bias_1(i) = x_k(1) - Loc_gt(1, 1);
-            y_bias_1(i) = x_k(2) - Loc_gt(1, 2);
+            x_bias_1(i) = x_k(1) - Loc_gt(n_node, 1);
+            y_bias_1(i) = x_k(2) - Loc_gt(n_node, 2);
             
         end
+        P = (I - K * H) * P;
         
     end
     
-    x_bias(i) = x_k(1) - Loc_gt(1, 1);
-    y_bias(i) = x_k(2) - Loc_gt(1, 2);
+    x_bias(i) = x_k(1) - Loc_gt(n_node, 1);
+    y_bias(i) = x_k(2) - Loc_gt(n_node, 2);
     
     Loc_tag2 = (Loc_tag2 - Loc_tag) * R2;
     Loc_tag = (Loc_tag - center) * R + center;

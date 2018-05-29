@@ -15,19 +15,23 @@ vel_c = [0.5, 0]; % m/s
 vel_r = 0.3; % rad/s
 vel_r2 = -0.6; % rad/s
 
-frame = 30; % fps
-sim_time = 20; % s
+frame = 60; % fps
+sim_time = 60; % s
 
 R = [cos(vel_r ./ frame), -sin(vel_r ./ frame); sin(vel_r ./ frame), cos(vel_r ./ frame)];
 R2 = [cos(vel_r2 ./ frame), -sin(vel_r2 ./ frame); sin(vel_r2 ./ frame), cos(vel_r2 ./ frame)];
 
 G = CNet(Num_nodes, Dim);
-h_fig = figure('Visible', 'on');
 
-r = Noise_std .^ 2;
-p = 0.05;
+r = 0.1;
+p = 0.1;
 x_k_1 = zeros(Num_nodes, Dim);
 x_k_2 = zeros(Num_nodes, Dim);
+
+x_bias = zeros(1, frame * sim_time);
+y_bias = zeros(1, frame * sim_time);
+x_bias_1 = zeros(1, frame * sim_time);
+y_bias_1 = zeros(1, frame * sim_time);
 
 for i = 1:(frame * sim_time)
     
@@ -47,6 +51,8 @@ for i = 1:(frame * sim_time)
     try
         
         G.Localize();
+        x_bias_1(i) = G.Loc_cp(1, 1) - Loc_gt(1, 1);
+        y_bias_1(i) = G.Loc_cp(1, 2) - Loc_gt(1, 2);
         
     catch
         
@@ -57,13 +63,15 @@ for i = 1:(frame * sim_time)
     if i > 2
         
         x_k = 2 .* x_k_1 - x_k_2;
-        p = 4 * p;
+        p = 4 * p + q;
         
         g = p / (p + r);
         
         if e == 1
             
             G.Loc_cp = x_k;
+            x_bias_1(i) = G.Loc_cp(1, 1) - Loc_gt(1, 1);
+            y_bias_1(i) = G.Loc_cp(1, 2) - Loc_gt(1, 2);
             
         else
             
@@ -77,15 +85,8 @@ for i = 1:(frame * sim_time)
     x_k_2 = x_k_1;
     x_k_1 = G.Loc_cp;
     
-    box on;
-    plot(Loc_anchor(:, 1), Loc_anchor(:, 2), 'go', 'Marker', 'square', 'markersize', 15, 'linewidth', 3.0); hold on;
-    plot(Loc_gt(:, 1), Loc_gt(:, 2), 'ro', 'markersize', 8, 'linewidth', 1.5); hold on;
-    plot(G.Loc_cp(:, 1), G.Loc_cp(:, 2), 'bx', 'markersize', 12, 'linewidth', 2.0); hold off;
-    axis equal;
-    axis([center(1) - 5.5, center(1) + 5.5, center(2) - 5.5, center(2) + 5.5]);
-    set(legend('Anchor', 'GroundTruth', 'Sim'), 'position', [0.4666071458622102, 0.7867292461877003, 0.10666666475435094, 0.12019230446849893]);
-    title('Dynamic Network Demo (with vanilla Kalman Filter)');
-    M(i) = getframe(h_fig);
+    x_bias(i) = x_k_1(1, 1) - Loc_gt(1, 1);
+    y_bias(i) = x_k_1(1, 2) - Loc_gt(1, 2);
     
     Loc_tag2 = (Loc_tag2 - Loc_tag) * R2;
     Loc_tag = (Loc_tag - center) * R + center;
@@ -96,14 +97,16 @@ for i = 1:(frame * sim_time)
     
 end
 
-box off;
-
-v = VideoWriter('Dynamic_Network_Simulation_Kalman2.avi');
-v.FrameRate = frame;
-v.open();
-for i = 1:length(M)
-    
-    v.writeVideo(M(i));
-    
-end
-v.close();
+subplot(2, 1, 1)
+plot((0:frame * sim_time - 1)/frame, x_bias_1, 'color', 'b');hold on;
+plot((0:frame * sim_time - 1)/frame, x_bias, 'color', 'r');hold off;
+xlabel('time(s)');
+ylabel('bias x (m)');
+legend('OR', 'KF');
+title('Origin v.s. Kalman')
+subplot(2, 1, 2)
+plot((0:frame * sim_time - 1)/frame, y_bias_1, 'color', 'b');hold on;
+plot((0:frame * sim_time - 1)/frame, y_bias, 'color', 'r');hold off;
+xlabel('time(s)');
+ylabel('bias y (m)');
+legend('OR', 'KF');
