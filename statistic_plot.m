@@ -12,12 +12,15 @@ legend('2D','3D')
 title('Iteration efficiency')
 
 figure;
-plot(d2.num_nodes, d2.time_array * 1000, 'b', 'linewidth', 2.0); hold on;
-plot(d3.num_nodes, d3.time_array * 1000, 'm', 'linewidth', 2.0); hold off;
+plot(d3.num_nodes(1:5), d3.time_array_sgd * 1000, 'm--', 'linewidth', 2.0); hold on;
+plot(d2.num_nodes(1:5), d2.time_array_sgd * 1000, 'b--', 'linewidth', 2.0); hold on;
+plot(d3.num_nodes, d3.time_array * 1000, 'm', 'linewidth', 2.0); hold on;
+plot(d2.num_nodes, d2.time_array * 1000, 'b', 'linewidth', 2.0); hold off;
 xlabel('Number of nodes')
 ylabel('Time (in ms) consumed (5000 times average)')
-legend('2D','3D')
+legend('3D, GD with LR decay', '2D, GD with LR decay', '3D, Adam','2D, Adam')
 title('Time efficiency')
+axis([10, 100, 0, 50]);
 
 figure;
 plot(d3.num_nodes, d3.max_array .* 100, 'm--', 'linewidth', 2.0); hold on;
